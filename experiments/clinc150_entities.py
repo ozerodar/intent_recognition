@@ -26,9 +26,7 @@ if __name__ == "__main__":
 
     for model in emb_models:
         emb_model = EmbeddingModel(model)
-        emb_trn, _, _ = get_embeddings_dataset(
-            emb_model, is_x_trn, is_x_tst, is_x_val, dataset="is"
-        )
+        emb_trn, _, _ = get_embeddings_dataset(emb_model, is_x_trn, is_x_tst, is_x_val, dataset="is")
 
         print(f"Model: {model}")
 

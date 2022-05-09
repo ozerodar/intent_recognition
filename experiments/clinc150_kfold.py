@@ -3,7 +3,6 @@ from pathlib import Path
 import numpy as np
 from intent_detection.intent.mlp_classifier import MLPClassifier
 from intent_detection.intent.utils import (
-    get_intents,
     predict_cosine,
     predict_supervised,
     get_clinc150,

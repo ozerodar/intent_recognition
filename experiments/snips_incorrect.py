@@ -13,7 +13,6 @@ from intent_detection.intent.utils import (
 )
 from pathlib import Path
 
-
 use_cuda = True
 BERT_MODEL = "bert-base-uncased"
 emb_models = ["all-MiniLM-L6-v2", "all-roberta-large-v1"]
@@ -28,12 +27,8 @@ def plot_confusion_matrices(m1, m2, m3):
     ax1 = plt.subplot(gs[:2, 2:])
     ax2 = plt.subplot(gs[2:4, 1:3])
 
-    plot_confusion_matrix(
-        ax0, cf=m1[emb_models[0]], title=f"unsupervised, {emb_models[0]}"
-    )
-    plot_confusion_matrix(
-        ax1, cf=m2[emb_models[0]], title=f"supervised, {emb_models[0]}"
-    )
+    plot_confusion_matrix(ax0, cf=m1[emb_models[0]], title=f"unsupervised, {emb_models[0]}")
+    plot_confusion_matrix(ax1, cf=m2[emb_models[0]], title=f"supervised, {emb_models[0]}")
     plot_confusion_matrix(ax2, cf=m3["BERT"], title=f"BERT-based")
     fig.tight_layout()
 
@@ -46,20 +41,10 @@ def plot_confusion_matrices(m1, m2, m3):
 
 
 def plot_confusion_matrix(
-    ax, cf, cbar=True, xyplotlabels=True, cmap="Blues", title=None
+        ax, cf, cbar=True, xyplotlabels=True, cmap="Blues", title=None
 ):
-    sns.heatmap(
-        cf,
-        annot=True,
-        fmt="",
-        cmap=cmap,
-        cbar=cbar,
-        xticklabels=True,
-        yticklabels=True,
-        square=True,
-        ax=ax,
-        annot_kws={"size": 9},
-    )
+    sns.heatmap(cf, annot=True, fmt="", cmap=cmap, cbar=cbar, xticklabels=True, yticklabels=True, square=True,
+                ax=ax, annot_kws={"size": 9})
     if xyplotlabels:
         ax.set_ylabel("True label", fontsize=10)
         ax.set_xlabel("Predicted label", fontsize=10)
@@ -74,20 +59,10 @@ if __name__ == "__main__":
     parser.add_argument("-us", action="store_true", help="Unsupervised", default=False)
     parser.add_argument("-s2v", action="store_true", help="Sent2vec", default=False)
     parser.add_argument("-cuda", action="store_true", help="Use cuda", default=False)
-    eval_bert, eval_sup, eval_unsup, eval_s2v, use_cuda = vars(
-        parser.parse_args()
-    ).values()
+    eval_bert, eval_sup, eval_unsup, eval_s2v, use_cuda = vars(parser.parse_args()).values()
 
     dataset = "snips"
-    (
-        snips_x_trn,
-        snips_y_trn,
-        snips_x_tst,
-        snips_y_tst,
-        snips_x_val,
-        snips_y_val,
-    ) = get_snips()
-
+    snips_x_trn, snips_y_trn, snips_x_tst, snips_y_tst, snips_x_val, snips_y_val = get_snips()
     _, snips_labels_trn, _, snips_labels_tst, _, snips_labels_val = get_data_snips()
 
     matrices_us, matrices_s, matrices_b = {}, {}, {}
@@ -101,65 +76,30 @@ if __name__ == "__main__":
         "Search\nCreative\nWork",
     ]
     if eval_unsup:
-        hits, matrices_us = cnf_matrix_unsupervised(
-            snips_x_trn,
-            snips_y_trn,
-            snips_x_tst,
-            snips_y_tst,
-            snips_x_val,
-            snips_y_val,
-            dataset=dataset,
-            trn_intents=snips_labels_trn,
-            true_intents=snips_labels_tst,
-            emb_models=emb_models,
-        )
+        hits, matrices_us = cnf_matrix_unsupervised(snips_x_trn, snips_y_trn, snips_x_tst, snips_y_tst, snips_x_val,
+                                                    snips_y_val, dataset=dataset, trn_intents=snips_labels_trn,
+                                                    true_intents=snips_labels_tst, emb_models=emb_models)
         for hit in hits:
             print("Unsupervised", hit)
 
     if eval_sup:
-        hits, matrices_s = cnf_matrix_supervised(
-            snips_x_trn,
-            snips_y_trn,
-            snips_x_tst,
-            snips_y_tst,
-            snips_x_val,
-            snips_y_val,
-            dataset=dataset,
-            trn_intents=snips_labels_trn,
-            true_intents=snips_labels_tst,
-            emb_models=emb_models,
-        )
+        hits, matrices_s = cnf_matrix_supervised(snips_x_trn, snips_y_trn, snips_x_tst, snips_y_tst, snips_x_val,
+                                                 snips_y_val, dataset=dataset, trn_intents=snips_labels_trn,
+                                                 true_intents=snips_labels_tst, emb_models=emb_models)
         for hit in hits:
             print("Supervised", hit)
 
     if eval_bert:
-        hit, matrix = cnf_matrix_bert(
-            snips_x_trn,
-            snips_y_trn,
-            snips_x_tst,
-            snips_y_tst,
-            snips_x_val,
-            snips_y_val,
-            dataset=dataset,
-            trn_intents=snips_labels_trn,
-            true_intents=snips_labels_tst,
-            use_cuda=use_cuda,
-        )
+        hit, matrix = cnf_matrix_bert(snips_x_trn, snips_y_trn, snips_x_tst, snips_y_tst, snips_x_val,
+                                      snips_y_val, dataset=dataset, trn_intents=snips_labels_trn,
+                                      true_intents=snips_labels_tst, use_cuda=use_cuda)
         print("BERT", hit)
         print(matrix)
 
     if eval_s2v:
-        hit, matrix = cnf_matrix_sent2vec(
-            snips_x_trn,
-            snips_y_trn,
-            snips_x_tst,
-            snips_y_tst,
-            snips_x_val,
-            snips_y_val,
-            dataset=dataset,
-            trn_intents=snips_labels_trn,
-            true_intents=snips_labels_tst,
-        )
+        hit, matrix = cnf_matrix_sent2vec(snips_x_trn, snips_y_trn, snips_x_tst, snips_y_tst, snips_x_val,
+                                          snips_y_val, dataset=dataset, trn_intents=snips_labels_trn,
+                                          true_intents=snips_labels_tst)
         print("sent2vec", hit)
 
     matrices_us[emb_models[0]] = np.array(

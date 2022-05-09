@@ -20,30 +20,14 @@ def plot_alg(ax, xpoints, ypoints_us, ypoints_s, model, color):
     ticks_labels_x = [i for i in range(num_variations + 10) if i % 20 == 0]
     ticks_labels_y = [60, 65, 70, 75, 80, 85, 90, 95, 100]
 
-    ax.plot(
-        xpoints,
-        ypoints_us,
-        label=f"encoder: {model}, unsupervised",
-        color=color[0],
-        linewidth=2,
-    )
-    ax.plot(
-        xpoints,
-        ypoints_s,
-        label=f"encoder: {model}, supervised",
-        color=color[1],
-        linewidth=2,
-    )
+    ax.plot(xpoints, ypoints_us, label=f"encoder: {model}, unsupervised", color=color[0], linewidth=2)
+    ax.plot(xpoints, ypoints_s, label=f"encoder: {model}, supervised", color=color[1], linewidth=2)
     ax.set_xlabel("number of sentences", fontsize=9)
     ax.set_ylabel("accuracy [%]")
     ax.yaxis.set_ticks(ticksy)
-    ax.set_yticklabels(
-        [int(i) if is_close_to_set(i, ticks_labels_y) else "" for i in ticksy]
-    )
+    ax.set_yticklabels([int(i) if is_close_to_set(i, ticks_labels_y) else "" for i in ticksy])
     ax.xaxis.set_ticks(ticksx)
-    ax.set_xticklabels(
-        [np.round(i, 1) if is_close_to_set(i, ticks_labels_x) else "" for i in ticksx]
-    )
+    ax.set_xticklabels([np.round(i, 1) if is_close_to_set(i, ticks_labels_x) else "" for i in ticksx])
     ax.legend(loc="lower right", fontsize=9)
     # ax.legend(loc="lower right")
     ax.grid(True, alpha=0.5)
@@ -55,30 +39,14 @@ def plot_alg_mini(ax, xpoints, ypoints_us, ypoints_s, model, color, thr=10):
     ticks_labels_x = [i for i in range(thr + 1) if i % 2 == 0]
     ticks_labels_y = [60, 65, 70, 75, 80, 85, 90, 95, 100]
 
-    ax.plot(
-        xpoints[:thr],
-        ypoints_us[:thr],
-        label=f"encoder: {model}, unsupervised",
-        color=color[0],
-        linewidth=2,
-    )
-    ax.plot(
-        xpoints[:thr],
-        ypoints_s[:thr],
-        label=f"encoder: {model}, supervised",
-        color=color[1],
-        linewidth=2,
-    )
+    ax.plot(xpoints[:thr], ypoints_us[:thr], label=f"encoder: {model}, unsupervised", color=color[0], linewidth=2)
+    ax.plot(xpoints[:thr], ypoints_s[:thr], label=f"encoder: {model}, supervised", color=color[1], linewidth=2)
 
     ax.set_xlabel("number of sentences", fontsize=9)
     ax.yaxis.set_ticks(ticksy)
-    ax.set_yticklabels(
-        [int(i) if is_close_to_set(i, ticks_labels_y) else "" for i in ticksy]
-    )
+    ax.set_yticklabels([int(i) if is_close_to_set(i, ticks_labels_y) else "" for i in ticksy])
     ax.xaxis.set_ticks(ticksx)
-    ax.set_xticklabels(
-        [np.round(i, 1) if is_close_to_set(i, ticks_labels_x) else "" for i in ticksx]
-    )
+    ax.set_xticklabels([np.round(i, 1) if is_close_to_set(i, ticks_labels_x) else "" for i in ticksx])
     ax.yaxis.tick_right()
     ax.grid(True, alpha=0.5)
 

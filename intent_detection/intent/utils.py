@@ -150,18 +150,8 @@ def get_data_csv(path, split):
                         float(row["score"]) / 5.0
                     )  # Normalize score to range 0 ... 1
                     texts = [
-                        row["sentence1"]
-                        .replace("’", "'")
-                        .replace("‚", "'")
-                        .replace('"', "'")
-                        .encode("utf-8")
-                        .decode(),
-                        row["sentence2"]
-                        .replace("’", "'")
-                        .replace("‚", "'")
-                        .replace('"', "'")
-                        .encode("utf-8")
-                        .decode(),
+                        row["sentence1"].replace("’", "'").replace("‚", "'").replace('"', "'").encode("utf-8").decode(),
+                        row["sentence2"].replace("’", "'").replace("‚", "'").replace('"', "'").encode("utf-8").decode(),
                     ]
                     x.append(texts)
                     y.append(score)
@@ -196,9 +186,7 @@ def predict_cosine(emb_model, query, templates, embeddings, labels):
 
 
 def predict_supervised(model, query):
-    emb = query.view(
-        -1, query.shape[0]
-    ).requires_grad_()  # TODO: move to model_nn.predict()
+    emb = query.view(-1, query.shape[0]).requires_grad_()
     outputs = torch.nn.functional.softmax(model.forward(emb), 1)
     score, predicted = torch.max(outputs.data, 1)
     out = predicted[0].item()
@@ -425,7 +413,7 @@ def evaluate_bert(
     **kwargs,
 ):
     model_nn = BertClassifier(
-        output_dim=len(set(y_trn)), model_name=model_name, use_cuda=use_cuda
+        output_dim=len(set(y_trn)), m_name=model_name, use_cuda=use_cuda
     )
     if use_cuda and torch.cuda.is_available():
         model_nn = model_nn.cuda()
@@ -585,6 +573,37 @@ def cnf_matrix_supervised(
     return hits, matrices
 
 
+
+def cnf_matrix_sent2vec(
+    x_trn,
+    y_trn,
+    x_tst,
+    y_tst,
+    x_val,
+    y_val,
+    trn_intents,
+    true_intents,
+    model_name=None,
+    templates=None,
+    dataset=None,
+):
+    prediction = []
+    hit = {}
+    pred_sen2vec = predict_sent2vec(x_tst, x_trn, y_trn)
+    for p, label in zip(pred_sen2vec, y_tst):
+        idx = np.where(y_trn == p)[0][0]
+        result = trn_intents[idx]
+        prediction.append(p)
+        if p == label:
+            if result in hit:
+                hit[result] += 1
+            else:
+                hit[result] = 1
+    hit = dict(sorted(hit.items(), key=lambda item: item[1], reverse=False))
+    conf_matrix = confusion_matrix(y_true=np.array(y_tst), y_pred=np.array(prediction))
+    return hit, conf_matrix
+
+
 def cnf_matrix_bert(
     x_trn,
     y_trn,
@@ -600,7 +619,7 @@ def cnf_matrix_bert(
     use_cuda=False,
 ):
     model_nn = BertClassifier(
-        output_dim=len(set(y_trn)), model_name=model_name, use_cuda=use_cuda
+        output_dim=len(set(y_trn)), m_name=model_name, use_cuda=use_cuda
     )
     if use_cuda and torch.cuda.is_available():
         model_nn = model_nn.cuda()
@@ -632,33 +651,3 @@ def cnf_matrix_bert(
         dict(sorted(hit.items(), key=lambda item: item[1], reverse=False)),
         conf_matrix,
     )
-
-
-def cnf_matrix_sent2vec(
-    x_trn,
-    y_trn,
-    x_tst,
-    y_tst,
-    x_val,
-    y_val,
-    trn_intents,
-    true_intents,
-    model_name=None,
-    templates=None,
-    dataset=None,
-):
-    prediction = []
-    hit = {}
-    pred_sen2vec = predict_sent2vec(x_tst, x_trn, y_trn)
-    for p, label in zip(pred_sen2vec, y_tst):
-        idx = np.where(y_trn == p)[0][0]
-        result = trn_intents[idx]
-        prediction.append(p)
-        if p == label:
-            if result in hit:
-                hit[result] += 1
-            else:
-                hit[result] = 1
-    hit = dict(sorted(hit.items(), key=lambda item: item[1], reverse=False))
-    conf_matrix = confusion_matrix(y_true=np.array(y_tst), y_pred=np.array(prediction))
-    return hit, conf_matrix

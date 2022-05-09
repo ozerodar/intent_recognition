@@ -37,93 +37,36 @@ if __name__ == "__main__":
     ).values()
 
     dataset = "is"
-    (
-        is_x_trn,
-        is_y_trn,
-        is_x_tst,
-        is_y_tst,
-        is_x_val,
-        is_y_val,
-        oos_x_trn,
-        oos_y_trn,
-        oos_x_tst,
-        oos_y_tst,
-        oos_x_val,
-        oos_y_val,
-    ) = get_data_clinc150()
+    is_x_trn, is_y_trn, is_x_tst, is_y_tst, is_x_val, is_y_val, oos_x_trn, oos_y_trn, oos_x_tst, oos_y_tst, oos_x_val, oos_y_val = get_data_clinc150()
     _, is_labels_trn, _, is_labels_tst, _, is_labels_val = get_clinc150("is")
 
     if eval_unsup:
-        hits, matrices = cnf_matrix_unsupervised(
-            is_x_trn,
-            is_y_trn,
-            is_x_tst,
-            is_y_tst,
-            is_x_val,
-            is_y_val,
-            dataset="is",
-            trn_intents=is_labels_trn,
-            true_intents=is_labels_tst,
-            emb_models=emb_models,
-        )
+        hits, matrices = cnf_matrix_unsupervised(is_x_trn, is_y_trn, is_x_tst, is_y_tst, is_x_val, is_y_val,
+                                                 dataset="is", trn_intents=is_labels_trn, true_intents=is_labels_tst,
+                                                 emb_models=emb_models)
         for name, matrix in matrices.items():
-            plot_confusion_matrix(
-                matrix, set(is_labels_tst), model_name=name, dataset_name=dataset
-            )
+            plot_confusion_matrix(matrix, set(is_labels_tst), model_name=name, dataset_name=dataset)
         for hit in hits:
             print("Unsupervised", hit)
 
     if eval_sup:
-        hits, matrices = cnf_matrix_supervised(
-            is_x_trn,
-            is_y_trn,
-            is_x_tst,
-            is_y_tst,
-            is_x_val,
-            is_y_val,
-            dataset="is",
-            trn_intents=is_labels_trn,
-            true_intents=is_labels_tst,
-            emb_models=emb_models,
-        )
+        hits, matrices = cnf_matrix_supervised(is_x_trn, is_y_trn, is_x_tst, is_y_tst, is_x_val, is_y_val,
+                                               dataset="is", trn_intents=is_labels_trn, true_intents=is_labels_tst,
+                                               emb_models=emb_models)
         for name, matrix in matrices.items():
-            plot_confusion_matrix(
-                matrix, set(is_labels_tst), model_name=name, dataset_name=dataset
-            )
+            plot_confusion_matrix(matrix, set(is_labels_tst), model_name=name, dataset_name=dataset)
         for hit in hits:
             print("Supervised", hit)
 
     if eval_bert:
-        hit, matrix = cnf_matrix_bert(
-            is_x_trn,
-            is_y_trn,
-            is_x_tst,
-            is_y_tst,
-            is_x_val,
-            is_y_val,
-            dataset="is",
-            trn_intents=is_labels_trn,
-            true_intents=is_labels_tst,
-        )
-        plot_confusion_matrix(
-            matrix, set(is_labels_tst), model_name="bert", dataset_name=dataset
-        )
+        hit, matrix = cnf_matrix_bert(is_x_trn, is_y_trn, is_x_tst, is_y_tst, is_x_val, is_y_val,
+                                      dataset="is", trn_intents=is_labels_trn, true_intents=is_labels_tst)
+        plot_confusion_matrix(matrix, set(is_labels_tst), model_name="bert", dataset_name=dataset)
         print("BERT", hit)
 
     if eval_s2v:
-        hit, matrix = cnf_matrix_sent2vec(
-            is_x_trn,
-            is_y_trn,
-            is_x_tst,
-            is_y_tst,
-            is_x_val,
-            is_y_val,
-            dataset="is",
-            trn_intents=is_labels_trn,
-            true_intents=is_labels_tst,
-        )
-        plot_confusion_matrix(
-            matrix, set(is_labels_tst), model_name="sent2vec", dataset_name=dataset
-        )
+        hit, matrix = cnf_matrix_sent2vec(is_x_trn, is_y_trn, is_x_tst, is_y_tst, is_x_val, is_y_val,
+                                          dataset="is", trn_intents=is_labels_trn, true_intents=is_labels_tst)
+        plot_confusion_matrix(matrix, set(is_labels_tst), model_name="sent2vec", dataset_name=dataset)
         print("sent2vec", hit)
     plt.show()

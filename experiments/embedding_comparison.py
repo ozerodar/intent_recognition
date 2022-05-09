@@ -21,9 +21,7 @@ for train, devel, test in data:
     trn, dev, tst = get_acronyms(train, devel, test)
 
     train_files, dev_files, test_files = get_dataset_filenames(train, devel, test)
-    x_trn, y_trn, x_dev, y_dev, x_tst, y_tst = get_datasets(
-        train_files, dev_files, test_files
-    )
+    x_trn, y_trn, x_dev, y_dev, x_tst, y_tst = get_datasets(train_files, dev_files, test_files)
 
     for model_name in models:
         model = EmbeddingModel(model_name)
@@ -39,5 +37,6 @@ for train, devel, test in data:
         pearson = pearsonr(y_tst, scores)[0]
         acc = 1 - mae(y_tst, scores)
         print(
-            f"model: {model_name}, train: {train}, dev: {dev}, test: {test}, acc: {acc:2.3f}, pearson: {pearson:2.3f}, training time: {trn_time} s, inference time: {inf_time} s"
+            f"model: {model_name}, train: {train}, dev: {dev}, test: {test}, acc: {acc:2.3f}, pearson: {pearson:2.3f},"
+            f"training time: {trn_time} s, inference time: {inf_time} s"
         )

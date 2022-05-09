@@ -117,9 +117,7 @@ class EmbeddingModel(SentenceTransformer):
         batch_size = kwargs.get("batch_size") or self.parameters.get("batch_size")
         epochs = kwargs.get("epochs") or self.parameters.get("epochs")
         warmup_steps = kwargs.get("warmup_steps") or self.parameters.get("warmup_steps")
-        evaluation_steps = kwargs.get("evaluation_steps") or self.parameters.get(
-            "evaluation_steps"
-        )
+        evaluation_steps = kwargs.get("evaluation_steps") or self.parameters.get("evaluation_steps")
 
         # self.initialize()
         if not x_trn:
@@ -128,20 +126,11 @@ class EmbeddingModel(SentenceTransformer):
         evaluator = None
 
         if x_dev and y_dev and len(x_dev) == len(y_dev):
-            dev = [
-                InputExample(texts=sentences, label=score)
-                for sentences, score in zip(x_dev, y_dev)
-            ]
-            evaluator = EmbeddingSimilarityEvaluator.from_input_examples(
-                dev, name="dev"
-            )
+            dev = [InputExample(texts=sentences, label=score) for sentences, score in zip(x_dev, y_dev)]
+            evaluator = EmbeddingSimilarityEvaluator.from_input_examples(dev, name="dev")
 
-        train_examples = [
-            InputExample(texts=pair, label=score) for pair, score in zip(x_trn, y_trn)
-        ]
-        train_dataloader = DataLoader(
-            train_examples, shuffle=True, batch_size=batch_size
-        )
+        train_examples = [InputExample(texts=pair, label=score) for pair, score in zip(x_trn, y_trn)]
+        train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=batch_size)
         train_loss = losses.CosineSimilarityLoss(self)
         train_objectives = [(train_dataloader, train_loss)]
 
