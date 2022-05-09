@@ -1,0 +1,15 @@
+data/*.pkl
+data/*.pt
+*.zip
+*.gz
+data/snips
+experiments
+notebooks
+logs
+model_store
+*egg-info*
+.git
+.gitignore
+README*
+intent_detection/fe
+data/models/*
