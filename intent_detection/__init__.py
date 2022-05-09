@@ -38,6 +38,9 @@ DEFAULT_CLIENT_ID = "0"
 if not MODEL_STORE.exists():
     MODEL_STORE.mkdir(parents=True)
 
+if not DIR_MODELS.exists():
+    DIR_MODELS.mkdir(parents=True)
+
 settings = Settings()
 AWS_ACCESS_KEY_ID = settings.aws_key
 AWS_SECRET_ACCESS_KEY = settings.aws_access_key

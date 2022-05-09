@@ -61,14 +61,12 @@ class EmbeddingModel(SentenceTransformer):
                 if not path.exists():
                     download_file(path=str(path))
                     shutil.unpack_archive(path, DIR_MODELS / self.transformer)  # TODO: temporary
+                super().__init__(str(DIR_MODELS / self.transformer))
             else:
                 path = DIR_MODELS / self.transformer
                 if not path.exists():
-                    if not DIR_MODELS.exists():
-                        DIR_MODELS.mkdir(parents=True)
                     super().__init__(f"{self.transformer}")
                     self.save(str(DIR_MODELS / self.transformer))
-            super().__init__(str(DIR_MODELS / self.transformer))
             self.initialized = True
 
     def predict(self, sentences: Union[List[str], str], **kwargs):

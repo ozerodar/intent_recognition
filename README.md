@@ -35,4 +35,4 @@ If the server is running, start the module using the command:
 python3 intent_detection/main.py
 ```
 
-Note that if you run the program for the first time, the embedding model must pre-compute embeddings, which might take some time.
+Note that if you run the program for the first time, the embedding model must pre-compute embeddings, and it might take several minutes.

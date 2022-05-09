@@ -127,8 +127,8 @@ class MLPClassifier(nn.Module):
                     )
                 iteration += 1
 
-        # model_scripted = torch.jit.script(self)  # Export to TorchScript
-        # model_scripted.save(output_path)  # Save model
+        model_scripted = torch.jit.script(self)  # Export to TorchScript
+        model_scripted.save(output_path)  # Save model
 
 
 class MlpClassifierWrapper(MLPClassifier):
