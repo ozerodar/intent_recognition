@@ -37,9 +37,7 @@ class IntentDetection:
 
     def get_intent(self, query, client_id=None):
         client_id = client_id or DEFAULT_CLIENT_ID
-        if not self.server or self.server.is_registered(
-            f"{MLP_MODEL_NAME}_{client_id}"
-        ):
+        if not self.server or self.server.is_registered(f"{MLP_MODEL_NAME}_{client_id}"):
             # result_unsupervised = self.get_intent_cosine_scores(query, client_id)
             result_supervised = self.get_intent_supervised(query, client_id)
             return result_supervised

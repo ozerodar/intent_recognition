@@ -55,18 +55,17 @@ class EmbeddingModel(SentenceTransformer):
         # upload_file(f"{self.name}.zip")
 
     def initialize(self):
+        path = DIR_MODELS / self.transformer
+
         if not self.initialized:
-            if settings.storage == "S3":
-                path = DIR_MODELS / f"{self.transformer}.zip"
-                if not path.exists():
+            if not path.exists():
+                if settings.storage == "S3":
                     download_file(path=str(path))
-                    shutil.unpack_archive(path, DIR_MODELS / self.transformer)  # TODO: temporary
-                super().__init__(str(DIR_MODELS / self.transformer))
-            else:
-                path = DIR_MODELS / self.transformer
-                if not path.exists():
+                    shutil.unpack_archive(path, path)  # TODO: temporary
+                else:
                     super().__init__(f"{self.transformer}")
-                    self.save(str(DIR_MODELS / self.transformer))
+                    self.save(str(path))
+            super().__init__(str(path))
             self.initialized = True
 
     def predict(self, sentences: Union[List[str], str], **kwargs):

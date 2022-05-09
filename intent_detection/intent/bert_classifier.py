@@ -151,9 +151,7 @@ class BertClassifier(nn.Module):
         tst = Dataset(test_x, test_y)
         test_dataloader = torch.utils.data.DataLoader(tst, batch_size=8)
 
-        device = torch.device(
-            "cuda" if self.use_cuda and torch.cuda.is_available() else "cpu"
-        )
+        device = torch.device("cuda" if self.use_cuda and torch.cuda.is_available() else "cpu")
 
         total_acc_test = 0
         with torch.no_grad():
@@ -173,9 +171,7 @@ class BertClassifier(nn.Module):
         tst = Dataset(test_x, test_y)
         test_dataloader = torch.utils.data.DataLoader(tst, batch_size=8)
 
-        device = torch.device(
-            "cuda" if self.use_cuda and torch.cuda.is_available() else "cpu"
-        )
+        device = torch.device("cuda" if self.use_cuda and torch.cuda.is_available() else "cpu")
 
         total_acc_test = 0
         pred = []

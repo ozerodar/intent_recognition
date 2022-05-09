@@ -21,28 +21,8 @@ def label_to_intent(lbl, lbls, intns):
 
 
 if __name__ == "__main__":
-    (
-        is_x_trn,
-        is_y_trn,
-        is_x_tst,
-        is_y_tst,
-        is_x_val,
-        is_y_val,
-        _,
-        _,
-        _,
-        _,
-        _,
-        _,
-    ) = get_data_clinc150()
-    (
-        is_temp_trn,
-        is_labels_trn,
-        is_temp_tst,
-        is_labels_tst,
-        is_temp_val,
-        is_labels_val,
-    ) = get_clinc150("is")
+    is_x_trn, is_y_trn, is_x_tst, is_y_tst, is_x_val, is_y_val, _, _, _, _, _, _ = get_data_clinc150()
+    is_temp_trn, is_labels_trn, is_temp_tst, is_labels_tst, is_temp_val, is_labels_val = get_clinc150("is")
 
     for model in emb_models:
         emb_model = EmbeddingModel(model)
@@ -82,19 +62,13 @@ if __name__ == "__main__":
                 emb_model, emb, is_temp_trn, emb_trn, is_y_trn
             )
             correct_us += int(pred_us == label)
-            print(
-                f"Unsupervised match: {match}, prediction: {label_to_intent(pred_us, is_y_trn, is_labels_trn)}, true: {label}"
-            )
+            print(f"Unsupervised match: {match}, prediction: {label_to_intent(pred_us, is_y_trn, is_labels_trn)}, true: {label}")
 
             pred_s, _ = predict_supervised(clf, emb)
             correct_s += int(pred_s == label)
-            print(
-                f"Supervised prediction: {label_to_intent(pred_s, is_y_trn, is_labels_trn)}, true: {label}"
-            )
+            print(f"Supervised prediction: {label_to_intent(pred_s, is_y_trn, is_labels_trn)}, true: {label}")
 
         acc_us = correct_us / len(x_test)
         acc_s = correct_s / len(x_test)
 
-        print(
-            f"Unsupervised accuracy: {acc_us:2.3f}, Supervised accuracy: {acc_s:2.3f}"
-        )
+        print(f"Unsupervised accuracy: {acc_us:2.3f}, Supervised accuracy: {acc_s:2.3f}")
