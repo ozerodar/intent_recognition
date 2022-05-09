@@ -4,7 +4,7 @@ This repository contains the code for the master's thesis "Intent Detection Modu
 
 ## Installation
 
-Install dependencies
+Clone the repository and install dependencies
 ```
 cd intent_recognition
 pipenv shell --python 3.8
@@ -23,7 +23,7 @@ mkdir model_store
 torchserve --start --model-store model_store
 ```
 
-To stop the server run
+To stop the server press CTRL+C and run
 ```
 mkdir model_store
 torchserve --stop
