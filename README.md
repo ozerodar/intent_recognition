@@ -14,7 +14,12 @@ Build the package
 ```
 pip3 install --editable .
 ```
- 
+
+Start the TorchServe server (you might want to do it in another window)
+```
+torchserve --start --model-store model_store
+```
+
 Run the module
 ```
 python3 intent_detection/main.py
