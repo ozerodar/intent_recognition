@@ -6,6 +6,7 @@ This repository contains the code for the master's thesis "Intent Detection Modu
 
 Install dependencies
 ```
+cd intent_recognition
 pipenv shell --python 3.8
 pipenv install --dev
 ```
