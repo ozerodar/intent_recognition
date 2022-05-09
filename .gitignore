@@ -16,4 +16,4 @@ data/clients/*
 !data/clients/0
 data/models/
 notebooks/
-.env*
+#.env*
