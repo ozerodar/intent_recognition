@@ -20,7 +20,7 @@ Build the package
 pip3 install --editable .
 ```
 
-Start the TorchServe server (you might want to do it in another window)
+Start the TorchServe server. You might want to do it in another window (within the same environment).
 ```
 mkdir model_store
 torchserve --start --model-store model_store

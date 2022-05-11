@@ -11,7 +11,7 @@ from intent_detection.intent.utils import (
 
 data = [
     # ("-", "-", "STSb_test"),
-    # ("STSb_train", "STSb_dev", "STSb_test"),
+    ("STSb_train", "STSb_dev", "STSb_test"),
     ("-", "-", "HP_test"),
     # ("HP_train", "HP_dev", "HP_test"),
 ]
@@ -30,9 +30,7 @@ for train, devel, test in data:
         model.tune(x_trn, y_trn, x_dev, y_dev, epochs=10)
         trn_time = time.time() - start_time
         start_time = time.time()
-        scores = model.pairwise_cosine_scores(
-            [x[0] for x in x_tst], [x[1] for x in x_tst]
-        )
+        scores = model.pairwise_cosine_scores([x[0] for x in x_tst], [x[1] for x in x_tst])
         inf_time = time.time() - start_time
         pearson = pearsonr(y_tst, scores)[0]
         acc = 1 - mae(y_tst, scores)

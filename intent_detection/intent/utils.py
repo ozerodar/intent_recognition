@@ -110,9 +110,7 @@ def get_data(filename, split):
     if ".json" in filename:
         x, y = get_data_sts(path)
     else:
-        if filename == "stsbenchmark.tsv.gz" and not os.path.exists(
-            path
-        ):  # TODO: add parameter of smth
+        if filename == "stsbenchmark.tsv.gz" and not os.path.exists(path):  # TODO: add parameter of smth
             util.http_get("https://sbert.net/datasets/stsbenchmark.tsv.gz", str(path))
         x, y = get_data_csv(path, split)
     return x, y
