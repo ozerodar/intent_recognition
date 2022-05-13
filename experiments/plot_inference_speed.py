@@ -464,6 +464,9 @@ plt.plot(
     linewidth=2,
 )
 
+ticks = [i for i in dataset_size.tolist() if i % 1500 == 0 or i == 150]
+plt.xlim((0, 15000))
+plt.xticks(ticks, labels=ticks)
 plt.xlabel("number of sentences in the dataset [-]")
 plt.ylabel("duration [ms]")
 plt.legend(loc="upper left")
