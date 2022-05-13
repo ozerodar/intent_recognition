@@ -34,21 +34,11 @@ def sentence_embedding(sentence):
     return emb
 
 
-def pair_emb(pair):
-    x = sentence_embedding(pair[0])
-    y = sentence_embedding(pair[1])
-    return [x, y]
-
-
 def get_embeddings_data_s2v(data):
     emb = []
     for sample in data:
         emb.append(sentence_embedding(sample).tolist())
     return torch.FloatTensor(emb)
-
-
-def get_embeddings_dataset_s2v(x_trn, x_tst, x_val):
-    return get_embeddings_data_s2v(x_trn), get_embeddings_data_s2v(x_tst), get_embeddings_data_s2v(x_val)
 
 
 def predict_sent2vec_supervised(model, query):
@@ -58,21 +48,6 @@ def predict_sent2vec_supervised(model, query):
     out = predicted[0].item()
     return out, score[0].item()
 
-
-def evaluate_s2v_supervised(x_trn, y_trn, x_tst, y_tst, x_val, y_val=None, templates=None, dataset=None, emb_models=None, thr=None):
-    emb_trn, emb_tst, emb_val = get_embeddings_dataset_s2v(x_trn, x_tst, x_val)
-    correct, j = 0, 1
-    model_nn = MLPClassifier()
-    model_nn.fit(emb_trn, y_trn, x_val=emb_val, y_val=y_val, verbose=True, dataset_name=dataset)
-    for sample, label in zip(emb_tst, y_tst):
-        intent, _ = predict_sent2vec_supervised(model_nn, sample)
-        correct += int(intent == label)
-        percents = (j / len(x_tst)) * 100
-        if np.isclose(percents % 1, 0):
-            print(f"{percents} %")
-        j += 1
-    accuracy = correct / len(x_tst)
-    return accuracy
 
 
 if __name__ == '__main__':
