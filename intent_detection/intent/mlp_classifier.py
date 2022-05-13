@@ -78,7 +78,7 @@ class MLPClassifier(nn.Module):
     def fit(self, x_train, y_train, **kwargs):
         batch_size = kwargs.get("batch_size", 64) if len(x_train) > 100 else 1
         n_iter = kwargs.get("n_iter", 5000)
-        learning_rate = kwargs.get("l_rate", 0.001)
+        learning_rate = kwargs.get("l_rate", 0.0001)
         weight_decay = kwargs.get("weight_decay", 0.000001)
         verbose = kwargs.get("verbose", False)
         num_epochs = kwargs.get("epoch") or int(n_iter / (len(x_train) / batch_size))

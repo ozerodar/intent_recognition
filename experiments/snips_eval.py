@@ -22,7 +22,7 @@ if __name__ == "__main__":
     eval_bert, eval_sup, eval_unsup, eval_s2v, use_cuda = vars(parser.parse_args()).values()
 
     dataset = "snips"
-    (snips_x_trn, snips_y_trn, snips_x_tst, snips_y_tst, snips_x_val, snips_y_val) = get_snips()
+    snips_x_trn, snips_y_trn, snips_x_tst, snips_y_tst, snips_x_val, snips_y_val = get_snips()
 
     if eval_bert:
         acc_bert = evaluate_bert(BERT_MODEL, snips_x_trn, snips_y_trn, snips_x_tst, snips_y_tst, snips_x_val,

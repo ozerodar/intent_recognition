@@ -48,8 +48,8 @@ if __name__ == "__main__":
                 pred_s, _ = predict_supervised(clf, emb)
                 correct_s += int(pred_s == label)
 
-                pred_sen2vec = predict_sent2vec(sample, x_train[f], y_train[f])
-                correct_sent2vec += int(pred_sen2vec == label)
+                # pred_sen2vec = predict_sent2vec(sample, x_train[f], y_train[f])
+                # correct_sent2vec += int(pred_sen2vec == label)
 
             acc_us = correct_us / len(x_test[f])
             acc_sent2vec = correct_sent2vec / len(x_test[f])

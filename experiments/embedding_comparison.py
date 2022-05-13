@@ -10,10 +10,10 @@ from intent_detection.intent.utils import (
 )
 
 data = [
-    # ("-", "-", "STSb_test"),
+    ("-", "-", "STSb_test"),
     ("STSb_train", "STSb_dev", "STSb_test"),
     ("-", "-", "HP_test"),
-    # ("HP_train", "HP_dev", "HP_test"),
+    ("HP_train", "HP_dev", "HP_test"),
 ]
 models = ["all-MiniLM-L6-v2", "all-roberta-large-v1"]
 

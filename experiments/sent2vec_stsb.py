@@ -6,9 +6,14 @@ import sent2vec
 import numpy as np
 from nltk.tokenize import TweetTokenizer
 
-from intent_detection.intent.utils import get_datasets
+from intent_detection.intent.utils import get_datasets, pearson
 
-file_name = 'stsbenchmark.tsv.gz'
+# train_file = 'stsbenchmark.tsv.gz'
+# val_file = 'stsbenchmark.tsv.gz'
+# test_file = 'stsbenchmark.tsv.gz'
+train_file = "STS_train_2021_harry_potter.json"
+val_file = "STS_dev_2021_harry_potter.json"
+test_file = "STS_test_2021_harry_potter.json"
 
 tk = TweetTokenizer()
 model = sent2vec.Sent2vecModel()
@@ -35,15 +40,6 @@ def cosine_similarity(pairs):
     return np.array(scores)
 
 
-def pearson(x, y):
-    mean_x = np.mean(x)
-    mean_y = np.mean(y)
-
-    numerator = np.sum((x - mean_x) * (y - mean_y))
-    denominator = np.sqrt(np.sum((x - mean_x) ** 2)) * np.sqrt(np.sum((y - mean_y) ** 2))
-    return numerator / denominator
-
-
 def sentence_embedding(sentence):
     emb = np.zeros(700)
     tokens = tk.tokenize(sentence)
@@ -57,11 +53,13 @@ def sentence_embedding(sentence):
 
 
 def pair_emb(pair):
-    return [sentence_embedding(pair[0]), sentence_embedding(pair[1])]
+    x = sentence_embedding(pair[0])
+    y = sentence_embedding(pair[1])
+    return [x, y]
 
 
 if __name__ == '__main__':
-    x_trn, y_trn, x_dev, y_dev, x_tst, y_tst = get_datasets(file_name, file_name, file_name)
+    x_trn, y_trn, x_dev, y_dev, x_tst, y_tst = get_datasets(train_file, val_file, test_file)
 
     for i in range(len(x_tst)):
         x_tst[i] = pair_emb(x_tst[i])

@@ -5,14 +5,14 @@ sentences1 = [
     "call me tom",
     "She is going to the park",
     "The man took a bow to shoot",
-    "I went to the river bank",
+    "I went to a river bank",
     "She knows him better than I",
 ]
 sentences2 = [
     "i will call you tom",
-    "She is going to park her car",
+    "She is going to park the car",
     "The man took a bow to the king",
-    "I went to bank to make a deposit",
+    "I went to a bank",
     "She knows him better than me",
 ]
 

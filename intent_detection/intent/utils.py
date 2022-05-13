@@ -77,9 +77,8 @@ def get_dataset_filenames(train, dev, test):
     return get_data_filenames(train), get_data_filenames(dev), get_data_filenames(test)
 
 
-def get_datasets(
-    train: List[str] = None, dev: List[str] = None, test: List[str] = None
-):
+def get_datasets(train: Union[List[str], str] = None, dev: Union[List[str], str] = None,
+                 test: Union[List[str], str] = None):
     _train = [train] if isinstance(train, str) else train
     _dev = [dev] if isinstance(dev, str) else dev
     _test = [test] if isinstance(test, str) else test
@@ -99,9 +98,7 @@ def get_datasets(
         x_tst.extend(x)
         y_tst.extend(y)
 
-    print(
-        f"number of pairs - train: {len(y_trn)}, dev: {len(y_dev)}, test: {len(y_tst)}"
-    )
+    print(f"number of pairs - train: {len(y_trn)}, dev: {len(y_dev)}, test: {len(y_tst)}")
     return x_trn, y_trn, x_dev, y_dev, x_tst, y_tst
 
 
@@ -144,9 +141,7 @@ def get_data_csv(path, split):
             reader = csv.DictReader(file, delimiter="\t", quoting=csv.QUOTE_NONE)
             for row in reader:
                 if row["split"] == split:
-                    score = (
-                        float(row["score"]) / 5.0
-                    )  # Normalize score to range 0 ... 1
+                    score = (float(row["score"]) / 5.0)  # Normalize score to range 0 ... 1
                     texts = [
                         row["sentence1"].replace("’", "'").replace("‚", "'").replace('"', "'").encode("utf-8").decode(),
                         row["sentence2"].replace("’", "'").replace("‚", "'").replace('"', "'").encode("utf-8").decode(),
@@ -189,6 +184,15 @@ def predict_supervised(model, query):
     score, predicted = torch.max(outputs.data, 1)
     out = predicted[0].item()
     return out, score[0].item()
+
+
+def pearson(x, y):
+    mean_x = np.mean(x)
+    mean_y = np.mean(y)
+
+    numerator = np.sum((x - mean_x) * (y - mean_y))
+    denominator = np.sqrt(np.sum((x - mean_x) ** 2)) * np.sqrt(np.sum((y - mean_y) ** 2))
+    return numerator / denominator
 
 
 def load_embeddings(client_id, model):  # only needed for an unsupervised approach
