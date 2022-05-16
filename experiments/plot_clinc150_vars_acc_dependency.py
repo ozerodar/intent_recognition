@@ -24,6 +24,7 @@ def plot_alg(ax, xpoints, ypoints_us, ypoints_s, model, color):
     ax.plot(xpoints, ypoints_s, label=f"encoder: {model}, supervised", color=color[1], linewidth=2)
     ax.set_xlabel("number of sentences", fontsize=9)
     ax.set_ylabel("accuracy [%]")
+    ax.set_xlim(0, 100)
     ax.yaxis.set_ticks(ticksy)
     ax.set_yticklabels([int(i) if is_close_to_set(i, ticks_labels_y) else "" for i in ticksy])
     ax.xaxis.set_ticks(ticksx)
@@ -42,6 +43,7 @@ def plot_alg_mini(ax, xpoints, ypoints_us, ypoints_s, model, color, thr=10):
     ax.plot(xpoints[:thr], ypoints_us[:thr], label=f"encoder: {model}, unsupervised", color=color[0], linewidth=2)
     ax.plot(xpoints[:thr], ypoints_s[:thr], label=f"encoder: {model}, supervised", color=color[1], linewidth=2)
 
+    ax.set_xlim(0, 10)
     ax.set_xlabel("number of sentences", fontsize=9)
     ax.yaxis.set_ticks(ticksy)
     ax.set_yticklabels([int(i) if is_close_to_set(i, ticks_labels_y) else "" for i in ticksy])
