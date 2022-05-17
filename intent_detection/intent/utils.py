@@ -174,7 +174,7 @@ def get_intents(client_id=None, split=None):
 def predict_cosine(emb_model, query, templates, embeddings, labels):
     cosine_scores = emb_model.cosine_scores(embeddings, query)
     match_idx = torch.argmax(cosine_scores).item()
-    match = templates[match_idx] if templates else ""
+    match = templates[match_idx] if templates is not None else ""
     return match, labels[match_idx], torch.max(cosine_scores).item()
 
 
